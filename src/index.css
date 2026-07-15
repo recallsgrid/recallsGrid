@@ -1,0 +1,83 @@
+/* @import url() FONT IMPORTS MUST ALWAYS BE AT THE VERY TOP OF THIS FILE, ABOVE THE TAILWIND IMPORTS — DO NOT DELETE THIS COMMENT */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* CRITICAL: THE FOLLOWING TAILWIND IMPORTS MUST NEVER BE DELETED OR REORDERED — DO NOT DELETE THIS COMMENT */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* END TAILWIND IMPORTS — ALL OTHER CSS MUST GO BELOW THIS LINE */
+
+:root {
+  --rg-bg: #bfcbd9;
+  --rg-heading: #0f1729;
+  --rg-body: #475569;
+}
+html,
+body,
+#root {
+  min-height: 100%;
+}
+body {
+  background-color: var(--rg-bg);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--rg-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+/* Frosted glass card */
+.rg-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 20px 50px -20px rgba(59, 130, 246, 0.25),
+    0 8px 24px -12px rgba(15, 23, 41, 0.12);
+}
+.rg-glass-strong {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 20px 50px -20px rgba(59, 130, 246, 0.3),
+    0 8px 24px -12px rgba(15, 23, 41, 0.14);
+}
+.rg-gradient-text {
+  background: linear-gradient(90deg, #3b82f6, #22d3ee);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.rg-gradient-bg {
+  background: linear-gradient(90deg, #3b82f6, #22d3ee);
+}
+/* thin scrollbar for inner panels */
+.rg-thin-scroll::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.rg-thin-scroll::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 41, 0.18);
+  border-radius: 999px;
+}
+@keyframes rg-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.rg-marquee-track {
+  animation: rg-marquee 30s linear infinite;
+}
+.rg-marquee-paused:hover .rg-marquee-track {
+  animation-play-state: paused;
+}
+.rg-tight {
+  letter-spacing: -0.02em;
+}
+.rg-tighter {
+  letter-spacing: -0.035em;
+}
