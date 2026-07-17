@@ -1,5 +1,5 @@
 import React, { useEffect, useState, memo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   SearchIcon,
@@ -60,11 +60,15 @@ export function Navbar({
   onSearchChange,
   onConnectSource
 }: NavbarProps) {
+  const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [demoOpen, setDemoOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [avatarOpen, setAvatarOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const isProductPage = location.pathname === '/product';
+  const landingCtaLabel = isProductPage ? 'launch dashbord' : 'Cortex v2.0';
+  const landingCtaTo = isProductPage ? '/dashboard' : '/product';
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll, {
@@ -118,12 +122,11 @@ export function Navbar({
               )}
               </nav>
               <div className="hidden lg:flex">
-                <PrimaryButton
-                onClick={() => setDemoOpen(true)}
-                className="px-4 py-2 text-xs">
-                
-                  Request Demo
-                </PrimaryButton>
+                <Link to={landingCtaTo}>
+                  <PrimaryButton className="px-4 py-2 text-xs">
+                    {landingCtaLabel}
+                  </PrimaryButton>
+                </Link>
               </div>
               <button
               className="rounded-lg p-2 text-rg-heading lg:hidden"

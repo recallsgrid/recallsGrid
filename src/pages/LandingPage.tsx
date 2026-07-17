@@ -16,12 +16,19 @@ import {
   Quote,
   Plus,
   Minus,
-  Twitter,
-  Github,
-  Linkedin,
-  Facebook } from
+  Facebook,
+  Youtube,
+  Linkedin } from
 'lucide-react';
 import { useSmoothScroll } from '../components/hooks/useSmoothScroll';
+
+function PinterestIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+      <path d="M12 2.5a9.5 9.5 0 0 0-3.47 17.82c-.06-.54-.12-1.37.02-1.96l1.12-4.77s-.29-.58-.29-1.43c0-1.34.78-2.34 1.76-2.34.83 0 1.23.62 1.23 1.37 0 .83-.53 2.07-.8 3.22-.23.96.48 1.74 1.43 1.74 1.71 0 3.03-1.8 3.03-4.39 0-2.29-1.64-3.89-3.98-3.89-2.71 0-4.3 2.03-4.3 4.13 0 .82.31 1.7.7 2.18.08.1.09.19.06.29l-.26 1.06c-.04.17-.14.21-.32.13-1.2-.56-1.84-2.3-1.84-3.69 0-3.01 2.19-5.77 6.3-5.77 3.31 0 5.88 2.36 5.88 5.51 0 3.29-2.08 5.94-4.97 5.94-0.97 0-1.89-.5-2.2-1.1l-.6 2.29c-.22.84-.8 1.9-1.2 2.54A9.5 9.5 0 1 0 12 2.5Z" />
+    </svg>
+  );
+}
 import { ParticleField } from '../components/shared/ParticleField';
 import heroVideo from '../Assets/hero.mp4';
 import {
@@ -175,17 +182,30 @@ export function LandingPage() {
     window.Tawk_LoadStart = new Date();
     
     const script = document.createElement('script');
+    script.id = 'tawk-script';
     script.async = true;
     script.src = 'https://embed.tawk.to/6a5619ce03ec7a1d4cd00ce6/1jtg59kij';
     script.charset = 'UTF-8';
     script.setAttribute('crossorigin', '*');
     document.head.appendChild(script);
     
-    return () => {
-      // Cleanup if needed
-      if (document.head.contains(script)) {
-        document.head.removeChild(script);
+    const cleanupChat = () => {
+      document.querySelectorAll('[id*="tawk"], [class*="tawk"], iframe[src*="tawk.to"], script[src*="tawk.to"]').forEach((node) => node.remove());
+      const tawkScript = document.getElementById('tawk-script');
+      if (tawkScript) tawkScript.remove();
+      if (window.Tawk_API) {
+        delete window.Tawk_API;
       }
+      if (window.Tawk_LoadStart) {
+        delete window.Tawk_LoadStart;
+      }
+    };
+
+    const interval = window.setInterval(cleanupChat, 250);
+
+    return () => {
+      cleanupChat();
+      window.clearInterval(interval);
     };
   }, []);
   return (
@@ -202,14 +222,13 @@ export function LandingPage() {
                 Enterprise AI Memory Infrastructure
               </PillBadge>
               <h1 className="text-5xl lg:text-7xl font-extrabold text-rg-heading rg-tighter leading-[1.1] mb-6">
-                The AI Memory & Knowledge Retrieval Platform for{' '}
+                Semantic Knowledge Retrieval for{' '}
                 <span className="rg-gradient-text">
-                  Persistent Intelligence.
+                  Enterprise AI Applications
                 </span>
               </h1>
               <p className="text-lg lg:text-xl text-rg-body mb-8 max-w-2xl mx-auto lg:mx-0">
-                Giving AI systems persistent memory and instant contextual
-                recall across sessions. Stop rebuilding context from scratch.
+                Enable continuity, personalization, and long-term reasoning with vector memory storage, contextual linking, and semantic recall infrastructure.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-12">
                 <PrimaryButton
@@ -218,9 +237,9 @@ export function LandingPage() {
                   
                   Request Demo
                 </PrimaryButton>
-                <Link to="/dashboard" className="w-full sm:w-auto">
+                <Link to="/product" className="w-full sm:w-auto">
                   <SecondaryButton className="w-full text-base py-3.5 px-8">
-                    Explore Dashboard
+                    Cortex v2.0
                   </SecondaryButton>
                 </Link>
               </div>
@@ -545,9 +564,9 @@ export function LandingPage() {
                     Monitor retrieval accuracy, explore knowledge graphs, and
                     manage data sources in real-time.
                   </p>
-                  <Link to="/dashboard">
+                  <Link to="/product">
                     <PrimaryButton className="py-3 px-6">
-                      Explore the Dashboard <ChevronRight className="w-4 h-4" />
+                      Cortex v2.0 <ChevronRight className="w-4 h-4" />
                     </PrimaryButton>
                   </Link>
 
@@ -556,7 +575,7 @@ export function LandingPage() {
                       <video autoPlay muted loop className="w-full h-full object-cover" src={visualizeVideo} />
                     </div>
                     <div className="col-span-1 h-48 bg-white/60 rounded-2xl border border-white/40 p-4 flex items-center justify-center">
-                      <img src={visualizeSvg} alt="Visualization" className="w-24 h-24" />
+                      <img src={visualizeSvg} alt="Visualization" className="w-full h-full object-contain" />
                     </div>
                   </div>
                 </div>
@@ -867,9 +886,9 @@ export function LandingPage() {
                 <h2 className="text-3xl md:text-5xl font-extrabold text-white rg-tight mb-6">
                   Give your AI a memory that lasts.
                 </h2>
-                <Link to="/dashboard">
+                <Link to="/product">
                   <PrimaryButton className="bg-slate-950 text-white hover:bg-slate-900 shadow-xl py-4 px-10 text-lg">
-                    Get Started Free <ChevronRight className="w-5 h-5" />
+                    Cortex v2.0 <ChevronRight className="w-5 h-5" />
                   </PrimaryButton>
                 </Link>
               </div>
@@ -981,17 +1000,26 @@ export function LandingPage() {
             </div>
             <FooterCol title="Product" links={[{label: "Platform", href: "#overview"}, {label: "Memory Engine", href: "#memory"}, {label: "Knowledge Graph", href: "#overview"}, {label: "Pricing", href: "#pricing"}]} />
             <FooterCol title="Company" links={[{label: "About", href: "#problem"}, {label: "Careers", href: "#pricing"}, {label: "Contact", href: "#contact"}]} />
-            <FooterCol title="Resources" links={[{label: "Docs", href: "#docs"}, {label: "API", href: "#docs"}, {label: "Blog", href: "#pricing"}]} />
+            <FooterCol title="Legal" links={[{label: "Privacy", href: "/privacy-policy"}, {label: "Terms", href: "/terms"}]} />
           </div>
           <div className="mt-10 flex flex-col-reverse items-center justify-between gap-4 border-t border-slate-200/70 pt-6 sm:flex-row">
             <p className="text-xs text-slate-500">© {new Date().getFullYear()} RecallsGrid. All rights reserved.</p>
             <div className="flex items-center gap-4 text-slate-500">
-              {[Twitter, Github, Linkedin, Facebook].map((I, i) => (
-                <a key={i} href="#" className="rounded-full p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-950">
-                  <I size={16} />
-                </a>
-              ))}
-              <span className="ml-2 text-xs">Privacy · Terms</span>
+              {[
+                { icon: Facebook, href: 'https://www.facebook.com/recallsgrid' },
+                { icon: Youtube, href: 'https://www.youtube.com/@recallsgrid' },
+                { icon: PinterestIcon, href: 'https://www.pinterest.com/recallsgrid/' },
+                { icon: Linkedin, href: '' },
+              ].map((item, i) => {
+                const I = item.icon;
+                const label = item.href.includes('pinterest') ? 'Pinterest' : item.href.includes('youtube') ? 'YouTube' : item.href === '' ? 'LinkedIn' : 'Facebook';
+                return (
+                  <a key={i} href={item.href} target={item.href ? '_blank' : undefined} rel={item.href ? 'noreferrer' : undefined} aria-label={label} title={label} className="rounded-full border border-slate-200/70 bg-white/80 p-2 text-slate-500 shadow-sm transition hover:bg-slate-100 hover:text-slate-950">
+                    <I size={16} />
+                  </a>
+                );
+              })}
+              
             </div>
           </div>
         </div>
@@ -1188,18 +1216,40 @@ function FooterCol({ title, links }: { title: string; links: Array<{label: strin
     }
     window.location.hash = sectionId;
   }
-  
+
   return (
     <div>
       <div className="text-sm font-bold text-ink">{title}</div>
       <ul className="mt-3 space-y-2">
-        {links.map((l) => (
-          <li key={l.label}>
-            <a href={l.href} onClick={(e) => {e.preventDefault(); scrollToSection(l.href.slice(1));}} className="text-sm text-ink-soft transition hover:text-ink">
-              {l.label}
-            </a>
-          </li>
-        ))}
+        {links.map((l) => {
+          const isRouteLink = l.href.startsWith('/') && !l.href.startsWith('//');
+          if (isRouteLink) {
+            return (
+              <li key={l.label}>
+                <Link to={l.href} className="text-sm text-ink-soft transition hover:text-ink">
+                  {l.label}
+                </Link>
+              </li>
+            );
+          }
+
+          return (
+            <li key={l.label}>
+              <a
+                href={l.href}
+                onClick={(e) => {
+                  if (l.href.startsWith('#')) {
+                    e.preventDefault();
+                    scrollToSection(l.href.slice(1));
+                  }
+                }}
+                className="text-sm text-ink-soft transition hover:text-ink"
+              >
+                {l.label}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
